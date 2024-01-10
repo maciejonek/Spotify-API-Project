@@ -14,29 +14,32 @@ public class UserService {
     public UserService(UserRepository repository) {
         this.userRepository = repository;
     }
-    public int getMappingTest(){
+
+    public int getMappingTest() {
         return 1;
     }
 
-    public String getSpotifyURL(){
+    public String getSpotifyURL() {
         return UserAuthenticator.generateAuthURL();
     }
-    public void addConnectedUserToDb(String callback){
+
+    public void addConnectedUserToDb(String callback) {
         JSONObject tokenJson = UserAuthenticator.getTokenJson(callback);
-        User user = new User(tokenJson.getString("access_token"),tokenJson.getString("refresh_token"));
+        User user = new User(tokenJson.getString("access_token"), tokenJson.getString("refresh_token"));
         JSONObject userJson = UserAuthenticator.getUserJson(user);
         user.setDisplayName(userJson.getString("display_name"));
         user.setSpotifyId(userJson.getString("id"));
-        if(userRepository.findBySpotifyId(user.getSpotifyId()) == null)
-        {
+        if (userRepository.findBySpotifyId(user.getSpotifyId()) == null) {
             System.out.println("User does not exist, adding");
             userRepository.save(user);
+        } else{
+            User originUser = userRepository.findBySpotifyId(user.getSpotifyId());
+            System.out.println("User exists, refreshing tokens");
+            originUser.setAuthToken(user.getAuthToken());
+            originUser.setRefreshToken(user.getRefreshToken());
+            userRepository.save(originUser);
         }
-        else
-            System.out.println("User exists");
+
 
     }
-
-
-
 }

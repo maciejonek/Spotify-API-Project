@@ -12,20 +12,18 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 public class UserAuthenticator {
-    private static String clientId = System.getenv("SPOTIFY_CLIENT");
-    private static String clientSecret = System.getenv("SPOTIFY_SECRET");
-    private static String redirectUri = "http://localhost:8080/user/callback";
+    private static final String clientId = System.getenv("SPOTIFY_CLIENT");
+    private static final String clientSecret = System.getenv("SPOTIFY_SECRET");
+    private static final String redirectUri = "http://localhost:8080/user/callback";
 
     public static String generateAuthURL() {
         String scopes = "user-read-private user-read-email user-library-read";
         String encodedScopes = URLEncoder.encode(scopes, StandardCharsets.UTF_8);
 
-        String authorizationUrl = String.format(
+        //        System.out.println("Authorization URL: " + authorizationUrl);
+        return String.format(
                 "https://accounts.spotify.com/authorize?response_type=code&client_id=%s&scope=%s&redirect_uri=%s",
                 clientId, encodedScopes, redirectUri);
-
-//        System.out.println("Authorization URL: " + authorizationUrl);
-        return authorizationUrl;
     }
 
     public static JSONObject getTokenJson(String authCode){

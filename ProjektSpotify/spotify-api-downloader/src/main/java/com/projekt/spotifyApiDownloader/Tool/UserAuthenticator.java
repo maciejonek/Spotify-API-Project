@@ -1,7 +1,10 @@
 package com.projekt.spotifyApiDownloader.Tool;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projekt.spotifyApiDownloader.Entity.User;
 import org.json.JSONObject;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 
 import java.net.URI;
 import java.net.URLEncoder;
@@ -19,16 +22,13 @@ public class UserAuthenticator {
     public static String generateAuthURL() {
         String scopes = "user-read-private user-read-email user-library-read";
         String encodedScopes = URLEncoder.encode(scopes, StandardCharsets.UTF_8);
-
-        //        System.out.println("Authorization URL: " + authorizationUrl);
         return String.format(
                 "https://accounts.spotify.com/authorize?response_type=code&client_id=%s&scope=%s&redirect_uri=%s",
                 clientId, encodedScopes, redirectUri);
     }
 
     public static JSONObject getTokenJson(String authCode){
-        try {
-            URI tokenURI = new URI("https://accounts.spotify.com/api/token");
+            URI tokenURI = URI.create("https://accounts.spotify.com/api/token");
 
             String credentials = clientId + ":" + clientSecret;
             String encodedCredentials;
@@ -37,8 +37,6 @@ public class UserAuthenticator {
             String requestBody = "grant_type=authorization_code" +
                     "&code=" + authCode + "&redirect_uri=" + redirectUri;
 
-            HttpClient client = HttpClient.newHttpClient();
-
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(tokenURI)
                     .header("Content-Type", "application/x-www-form-urlencoded")
@@ -46,37 +44,52 @@ public class UserAuthenticator {
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .build();
 
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-//            System.out.println(response.body());
-            return new JSONObject(response.body());
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
+            return sendRequest(request);
     }
     public static JSONObject getUserJson(User user){
-        try{
             String accessToken = user.getAuthToken();
-            URI userURL = new URI("https://api.spotify.com/v1/me");
-            HttpClient client = HttpClient.newHttpClient();
+            URI userURL = URI.create("https://api.spotify.com/v1/me");
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(userURL)
                     .header("Authorization","Bearer " + accessToken)
                     .build();
+        return sendRequest(request);
+    }
+
+    private static JSONObject sendRequest(HttpRequest request){
+        try{
+            HttpClient client = HttpClient.newHttpClient();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if(response.body()!=null) return new JSONObject(response.body());
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public static void userJsonToPlaylistController(User user){
+        Converter<User> converter = new Converter<>(user);
+        String userString = converter.convertEntityToString();
+        URI playlistUri = URI.create("http://localhost:8080/playlist/download");
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(playlistUri)
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(userString))
+                    .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-//            System.out.println(response.body());
-            return new JSONObject(response.body());
-//            System.out.println(object.getString("id"));
-//            return object;
-        }
-        catch (Exception e){
+
+            String responseBody = response.body();
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return null;
     }
 
 

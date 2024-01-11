@@ -16,9 +16,7 @@ public class PlaylistService {
         this.userRepository = userRepository;
     }
 
-    public void getNewestPlaylist(){
-        User user = userRepository.findById(1L).get();
+    public void getNewestPlaylist(User user){
         PlaylistDownloader.getSpotifyPlaylist(user);
-
     }
 }

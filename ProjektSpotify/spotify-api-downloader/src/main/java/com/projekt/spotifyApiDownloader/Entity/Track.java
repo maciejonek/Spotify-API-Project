@@ -1,5 +1,7 @@
 package com.projekt.spotifyApiDownloader.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -7,22 +9,34 @@ import java.util.Set;
 
 @Entity
 @Table(name = "track")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Track {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
     @Column(name = "track_id")
+    @JsonProperty("id")
     private String trackId;
     @Column(name = "name")
+    @JsonProperty("name")
     private String name;
     @Column(name = "image")
+    @JsonProperty("type")
     private String image;
 
     @ManyToMany(mappedBy = "tracks")
     private Set<Playlist> playlists = new HashSet<>();
 
     public Track() {}
+
+
+    public Track(String trackId, String name, String image) {
+        this.trackId = trackId;
+        this.name = name;
+        this.image = image;
+    }
+
 
     public Long getId() {
         return id;
@@ -32,10 +46,12 @@ public class Track {
         this.id = id;
     }
 
+    @JsonProperty("id")
     public String getTrackId() {
         return trackId;
     }
 
+    @JsonProperty("id")
     public void setTrackId(String trackId) {
         this.trackId = trackId;
     }

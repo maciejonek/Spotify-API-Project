@@ -1,4 +1,4 @@
-package com.projekt.spotifyApiDownloader.Response;
+package com.projekt.spotifyApiDownloader.FromJsonObjects;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

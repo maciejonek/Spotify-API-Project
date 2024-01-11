@@ -1,5 +1,6 @@
 package com.projekt.spotifyApiDownloader.Entity;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,6 +18,7 @@ public class Playlist {
     @Column(name = "id")
     private Long id;
     @JsonProperty("id")
+    @JsonAlias("playlistId")
     @Column(name = "playlist_id")
     private String playlistId;
     @Column(name = "name")

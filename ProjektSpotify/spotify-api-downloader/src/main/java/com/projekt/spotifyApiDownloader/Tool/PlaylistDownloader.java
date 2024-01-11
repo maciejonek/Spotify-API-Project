@@ -1,10 +1,9 @@
 package com.projekt.spotifyApiDownloader.Tool;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projekt.spotifyApiDownloader.Entity.Playlist;
 import com.projekt.spotifyApiDownloader.Entity.User;
-import com.projekt.spotifyApiDownloader.Response.PlaylistResponse;
+import com.projekt.spotifyApiDownloader.FromJsonObjects.PlaylistResponse;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -19,10 +18,10 @@ public class PlaylistDownloader {
     private static final String clientSecret = System.getenv("SPOTIFY_SECRET");
     private static final String redirectUri = "http://localhost:8080/user/callback";
 
-    public static JSONObject getSpotifyPlaylist(User user){
+    public static List<Playlist> getSpotifyPlaylist(User user){
         try {
-            URI playlistURI = new URI("https://api.spotify.com/v1/me/playlists?limit=1");
-            URI trackURI = new URI("http://localhost:8080/track/from/playlist");
+            URI playlistURI = new URI("https://api.spotify.com/v1/me/playlists?limit=2");
+            URI trackURI = new URI("http://localhost:8080/track/download");
             String accessToken = user.getAuthToken();
 
             HttpResponse<String> response = callForJSON(playlistURI,accessToken);
@@ -40,12 +39,12 @@ public class PlaylistDownloader {
 
             playlistEntities.forEach(playlist -> {
                 try {
-                    sendPlaylistToTrackController(trackURI,playlist);
+                    sendPlaylistToTrackController(trackURI,playlist,user);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             });
-            return new JSONObject(response.body());
+            return playlistEntities;
         }
         catch (Exception e){
             e.printStackTrace();
@@ -60,24 +59,19 @@ public class PlaylistDownloader {
                 .build();
         return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
-    private static void sendPlaylistToTrackController(URI uri, Playlist playlist) throws IOException, InterruptedException {
-            String playlistString = convertPlaylistObjectToJson(playlist);
-            HttpClient client = HttpClient.newHttpClient();
+    private static void sendPlaylistToTrackController(URI uri, Playlist playlist, User user) throws IOException, InterruptedException {
+         HttpClient client = HttpClient.newHttpClient();
+
+            JSONObject requestJson = new JSONObject();
+            requestJson.put("user", new JSONObject(user));
+            requestJson.put("playlist", new JSONObject(playlist));
+
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(uri)
                     .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(playlistString))
+                    .POST(HttpRequest.BodyPublishers.ofString(requestJson.toString()))
                     .build();
             client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
-    private static String convertPlaylistObjectToJson(Playlist playlist){
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            return mapper.writeValueAsString(playlist);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return "";
-        }
-    }
 }

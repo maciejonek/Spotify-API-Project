@@ -20,7 +20,7 @@ public class PlaylistDownloader {
 
     public static List<Playlist> getSpotifyPlaylist(User user){
         try {
-            URI playlistURI = new URI("https://api.spotify.com/v1/me/playlists?limit=2");
+            URI playlistURI = new URI("https://api.spotify.com/v1/me/playlists?limit=1");
             URI trackURI = new URI("http://localhost:8080/track/download");
             String accessToken = user.getAuthToken();
 

@@ -4,9 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projekt.spotifyApiDownloader.Entity.Playlist;
 import com.projekt.spotifyApiDownloader.Entity.Track;
 import com.projekt.spotifyApiDownloader.Entity.User;
-import com.projekt.spotifyApiDownloader.FromJsonObjects.PlaylistResponse;
-import com.projekt.spotifyApiDownloader.FromJsonObjects.TrackResponse;
-import org.json.JSONObject;
+import com.projekt.spotifyApiDownloader.FromJsonObjects.ItemsResponse;
 
 import java.io.IOException;
 import java.net.URI;
@@ -27,26 +25,15 @@ public class TrackDownloader {
             String accessToken = user.getAuthToken();
 
             HttpResponse<String> response = callForJSON(tracksURI,accessToken);
-            System.out.println(response.body());
+
             ObjectMapper objectMapper = new ObjectMapper();
-            TrackResponse trackResponse = objectMapper.readValue(response.body(), TrackResponse.class);
+            ItemsResponse itemsResponse = objectMapper.readValue(response.body(), ItemsResponse.class);
 
-            System.out.println(trackResponse);
-
-            List<Track> trackEntities = trackResponse.getTracks().stream().map(
-                    trackObject -> {
-                        Track track = new Track(
-                                trackObject.getTrackId(),
-                                trackObject.getName(),
-                                trackObject.getImage()
-                        );
-                        track.getPlaylists().add(playlist);
-                        return track;
-                    }
-
-            ).toList();
-
-            return trackEntities;
+            return itemsResponse.getItems().stream().map(item-> {
+                Track track = item.getTrack();
+                track.getPlaylists().add(playlist);
+                return track;
+            }).toList();
         }
         catch (Exception e){
             e.printStackTrace();

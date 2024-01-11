@@ -56,18 +56,20 @@ public class Track {
         this.trackId = trackId;
     }
 
+    @JsonProperty("name")
     public String getName() {
         return name;
     }
-
+    @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    @JsonProperty("type")
     public String getImage() {
         return image;
     }
-
+    @JsonProperty("type")
     public void setImage(String image) {
         this.image = image;
     }

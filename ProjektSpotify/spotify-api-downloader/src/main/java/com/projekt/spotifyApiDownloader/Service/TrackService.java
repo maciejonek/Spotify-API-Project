@@ -3,21 +3,22 @@ package com.projekt.spotifyApiDownloader.Service;
 import com.projekt.spotifyApiDownloader.Entity.Playlist;
 import com.projekt.spotifyApiDownloader.Entity.Track;
 import com.projekt.spotifyApiDownloader.Entity.User;
+import com.projekt.spotifyApiDownloader.Repository.PlaylistRepository;
 import com.projekt.spotifyApiDownloader.Repository.TrackRepository;
 import com.projekt.spotifyApiDownloader.Tool.TrackDownloader;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 @Service
 public class TrackService {
     public TrackRepository trackRepository;
+    public PlaylistRepository playlistRepository;
 
-    public TrackService(TrackRepository trackRepository) {
+    public TrackService(TrackRepository trackRepository, PlaylistRepository playlistRepository) {
         this.trackRepository = trackRepository;
+        this.playlistRepository = playlistRepository;
     }
 
-    @Transactional
     public void addTracksFromPlaylist(Playlist playlist, User user){
         List<Track> tracks = TrackDownloader.getTracksFromPlaylist(playlist,user);
 //        tracks.forEach(track -> {
@@ -35,23 +36,26 @@ public class TrackService {
 //        });
         for (Track track : tracks) {
             Track existingTrack = trackRepository.findByTrackId(track.getTrackId());
-
+            Playlist existingPlaylist = playlistRepository.findByPlaylistId(playlist.getPlaylistId());
             if (existingTrack == null) {
                 // Nowy utwór
                 System.out.println("new track");
-                track.getPlaylists().add(playlist);
+                track.getPlaylists().add(existingPlaylist);
+                existingPlaylist.getPlaylistTracks().add(track);
                 trackRepository.save(track);
             } else {
                 // Utwór już istnieje
                 System.out.println("track exists");
-                existingTrack.getPlaylists().add(playlist);
+                existingTrack.getPlaylists().add(existingPlaylist);
+                existingPlaylist.getPlaylistTracks().add(existingTrack);
                 trackRepository.save(existingTrack);
+                playlistRepository.save(existingPlaylist);
             }
         }
 
     }
     public Track getTrack(){
-        return trackRepository.findById(1L).get();
+        return trackRepository.findById(5L).get();
     }
 
 

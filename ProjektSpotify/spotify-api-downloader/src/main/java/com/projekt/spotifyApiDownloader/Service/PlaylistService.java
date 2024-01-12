@@ -31,8 +31,13 @@ public class PlaylistService {
                 Playlist originPlaylist = playlistRepository.findByPlaylistId(playlist.getPlaylistId());
                 originPlaylist.setDescription(playlist.getDescription());
                 originPlaylist.setName(playlist.getName());
+                originPlaylist.getPlaylistTracks().clear();
                 playlistRepository.save(originPlaylist);
             }
         });
+        PlaylistDownloader.addTracksToPlaylist(playlists,user);
+    }
+    public Playlist getPlaylist(Long id){
+        return this.playlistRepository.findById(id).get();
     }
 }

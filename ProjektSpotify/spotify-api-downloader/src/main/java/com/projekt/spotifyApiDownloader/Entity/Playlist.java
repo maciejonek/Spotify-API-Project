@@ -1,9 +1,6 @@
 package com.projekt.spotifyApiDownloader.Entity;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -16,9 +13,9 @@ public class Playlist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
-    @JsonProperty("id")
-    @JsonAlias("playlistId")
+    private Long databaseId;
+    @JsonProperty("playlistId")
+    @JsonAlias("id")
     @Column(name = "playlist_id")
     private String playlistId;
     @Column(name = "name")
@@ -26,32 +23,33 @@ public class Playlist {
     @Column(name = "description")
     private String description;
 
-    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "playlist_track",
             joinColumns = @JoinColumn(name = "playlist_id"),
             inverseJoinColumns = @JoinColumn(name = "track_id")
     )
-    private Set<Track> tracks = new HashSet<>();
+    private Set<Track> playlistTracks = new HashSet<>();
 
     public Playlist() {
     }
 
-    public Playlist(String playlistId, String name, String description) {
+
+        public Playlist(String playlistId, String name, String description) {
         this.playlistId = playlistId;
         this.name = name;
         this.description = description;
     }
 
-    public Long getId() {
-        return id;
+    public Long getDatabaseId() {
+        return databaseId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setDatabaseId(Long databaseId) {
+        this.databaseId = databaseId;
     }
-    @JsonProperty("id")
+
+        @JsonProperty("id")
     public String getPlaylistId() {
         return playlistId;
     }
@@ -76,11 +74,11 @@ public class Playlist {
         this.description = description;
     }
 
-    public Set<Track> getTracks() {
-        return tracks;
+    public Set<Track> getPlaylistTracks() {
+        return playlistTracks;
     }
 
-    public void setTracks(Set<Track> tracks) {
-        this.tracks = tracks;
+    public void setPlaylistTracks(Set<Track> playlistTracks) {
+        this.playlistTracks = playlistTracks;
     }
 }

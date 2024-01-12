@@ -1,5 +1,6 @@
 package com.projekt.spotifyApiDownloader.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -25,7 +26,8 @@ public class Track {
     @JsonProperty("type")
     private String image;
 
-    @ManyToMany(mappedBy = "tracks")
+    @JsonIgnore
+    @ManyToMany(mappedBy = "playlistTracks")
     private Set<Playlist> playlists = new HashSet<>();
 
     public Track() {}

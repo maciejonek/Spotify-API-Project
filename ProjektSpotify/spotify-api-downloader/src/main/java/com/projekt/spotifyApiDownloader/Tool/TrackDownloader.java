@@ -15,17 +15,12 @@ import java.util.List;
 
 public class TrackDownloader {
 
-    private static final String clientId = System.getenv("SPOTIFY_CLIENT");
-    private static final String clientSecret = System.getenv("SPOTIFY_SECRET");
-    private static final String redirectUri = "http://localhost:8080/user/callback";
-
     public static List<Track> getTracksFromPlaylist(Playlist playlist, User user){
         try {
             URI tracksURI = URI.create("https://api.spotify.com/v1/playlists/"+playlist.getPlaylistId()+"/tracks");
             String accessToken = user.getAuthToken();
 
             HttpResponse<String> response = callForJSON(tracksURI,accessToken);
-
             ObjectMapper objectMapper = new ObjectMapper();
             ItemsResponse itemsResponse = objectMapper.readValue(response.body(), ItemsResponse.class);
 

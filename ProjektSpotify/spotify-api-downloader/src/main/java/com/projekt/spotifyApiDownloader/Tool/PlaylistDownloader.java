@@ -14,14 +14,11 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 public class PlaylistDownloader {
-    private static final String clientId = System.getenv("SPOTIFY_CLIENT");
-    private static final String clientSecret = System.getenv("SPOTIFY_SECRET");
-    private static final String redirectUri = "http://localhost:8080/user/callback";
 
     public static List<Playlist> getSpotifyPlaylist(User user){
         try {
             URI playlistURI = new URI("https://api.spotify.com/v1/me/playlists?limit=1");
-            URI trackURI = new URI("http://localhost:8080/track/download");
+
             String accessToken = user.getAuthToken();
 
             HttpResponse<String> response = callForJSON(playlistURI,accessToken);
@@ -29,22 +26,14 @@ public class PlaylistDownloader {
             ObjectMapper objectMapper = new ObjectMapper();
             PlaylistResponse playlistResponse = objectMapper.readValue(response.body(),PlaylistResponse.class);
 
-            List<Playlist> playlistEntities = playlistResponse.getPlaylists().stream().map(
+
+            return playlistResponse.getPlaylists().stream().map(
                     playlistObject -> new Playlist(
                             playlistObject.getPlaylistId(),
                             playlistObject.getName(),
                             playlistObject.getDescription()
                     )
             ).toList();
-
-            playlistEntities.forEach(playlist -> {
-                try {
-                    sendPlaylistToTrackController(trackURI,playlist,user);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            });
-            return playlistEntities;
         }
         catch (Exception e){
             e.printStackTrace();
@@ -58,6 +47,16 @@ public class PlaylistDownloader {
                 .header("Authorization","Bearer " + token)
                 .build();
         return client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+    public static  void addTracksToPlaylist(List<Playlist> playlists, User user){
+        URI trackURI = URI.create("http://localhost:8080/track/download");
+        playlists.forEach(playlist -> {
+            try {
+                sendPlaylistToTrackController(trackURI,playlist,user);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
     }
     private static void sendPlaylistToTrackController(URI uri, Playlist playlist, User user) throws IOException, InterruptedException {
          HttpClient client = HttpClient.newHttpClient();

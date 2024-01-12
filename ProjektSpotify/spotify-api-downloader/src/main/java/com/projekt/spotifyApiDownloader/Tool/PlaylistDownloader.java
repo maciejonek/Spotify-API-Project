@@ -17,7 +17,7 @@ public class PlaylistDownloader {
 
     public static List<Playlist> getSpotifyPlaylist(User user){
         try {
-            URI playlistURI = new URI("https://api.spotify.com/v1/me/playlists?limit=1");
+            URI playlistURI = new URI("https://api.spotify.com/v1/me/playlists?limit=3");
 
             String accessToken = user.getAuthToken();
 
@@ -48,22 +48,23 @@ public class PlaylistDownloader {
                 .build();
         return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
-    public static  void addTracksToPlaylist(List<Playlist> playlists, User user){
+    public static  void addTracksToPlaylist(User user){
         URI trackURI = URI.create("http://localhost:8080/track/download");
-        playlists.forEach(playlist -> {
+//        playlists.forEach(playlist -> {
             try {
-                sendPlaylistToTrackController(trackURI,playlist,user);
+                sendPlaylistToTrackController(trackURI,user);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-        });
+//        });
     }
-    private static void sendPlaylistToTrackController(URI uri, Playlist playlist, User user) throws IOException, InterruptedException {
+    private static void sendPlaylistToTrackController(URI uri, User user) throws IOException, InterruptedException {
          HttpClient client = HttpClient.newHttpClient();
 
             JSONObject requestJson = new JSONObject();
-            requestJson.put("user", new JSONObject(user));
-            requestJson.put("playlist", new JSONObject(playlist));
+            ObjectMapper mapper = new ObjectMapper();
+            String userString = mapper.writeValueAsString(user);
+            requestJson.put("user", new JSONObject(userString));
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(uri)

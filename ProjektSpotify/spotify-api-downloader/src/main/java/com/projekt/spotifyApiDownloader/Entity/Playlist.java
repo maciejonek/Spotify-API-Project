@@ -23,6 +23,12 @@ public class Playlist {
     @Column(name = "description")
     private String description;
 
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
+
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "playlist_track",
@@ -33,8 +39,6 @@ public class Playlist {
 
     public Playlist() {
     }
-
-
         public Playlist(String playlistId, String name, String description) {
         this.playlistId = playlistId;
         this.name = name;
@@ -49,7 +53,7 @@ public class Playlist {
         this.databaseId = databaseId;
     }
 
-        @JsonProperty("id")
+    @JsonProperty("id")
     public String getPlaylistId() {
         return playlistId;
     }
@@ -80,5 +84,12 @@ public class Playlist {
 
     public void setPlaylistTracks(Set<Track> playlistTracks) {
         this.playlistTracks = playlistTracks;
+    }
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

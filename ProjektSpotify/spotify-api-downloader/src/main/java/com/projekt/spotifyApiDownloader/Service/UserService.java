@@ -4,7 +4,6 @@ import com.projekt.spotifyApiDownloader.Entity.User;
 import com.projekt.spotifyApiDownloader.Repository.UserRepository;
 import com.projekt.spotifyApiDownloader.Tool.UserAuthenticator;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,17 +30,16 @@ public class UserService {
         user.setSpotifyId(userJson.getString("id"));
         if (userRepository.findBySpotifyId(user.getSpotifyId()) == null) {
             System.out.println("User does not exist, adding");
-            UserAuthenticator.userJsonToPlaylistController(user);
             userRepository.save(user);
+            UserAuthenticator.userJsonToPlaylistController(user);
 
         } else{
             User originUser = userRepository.findBySpotifyId(user.getSpotifyId());
             System.out.println("User exists, refreshing tokens");
             originUser.setAuthToken(user.getAuthToken());
             originUser.setRefreshToken(user.getRefreshToken());
-            UserAuthenticator.userJsonToPlaylistController(originUser);
             userRepository.save(originUser);
-
+            UserAuthenticator.userJsonToPlaylistController(originUser);
         }
 
 

@@ -21,10 +21,14 @@ public class PlaylistService {
 
     public void getNewestPlaylist(User user){
         List<Playlist> playlists =  PlaylistDownloader.getSpotifyPlaylist(user);
+        User originUser = userRepository.findBySpotifyId(user.getSpotifyId());
         playlists.forEach(playlist -> {
             if(playlistRepository.findByPlaylistId(playlist.getPlaylistId())==null) {
                 System.out.println("new playlist");
+                playlist.setUser(originUser);
                 playlistRepository.save(playlist);
+                originUser.getUserPlaylists().add(playlist);
+                userRepository.save(originUser);
             }
             else{
                 System.out.println("Playlist update");
@@ -32,10 +36,13 @@ public class PlaylistService {
                 originPlaylist.setDescription(playlist.getDescription());
                 originPlaylist.setName(playlist.getName());
                 originPlaylist.getPlaylistTracks().clear();
+                originPlaylist.setUser(originUser);
                 playlistRepository.save(originPlaylist);
+                originUser.getUserPlaylists().add(originPlaylist);
+                userRepository.save(originUser);
             }
         });
-        PlaylistDownloader.addTracksToPlaylist(playlists,user);
+        PlaylistDownloader.addTracksToPlaylist(originUser);
     }
     public Playlist getPlaylist(Long id){
         return this.playlistRepository.findById(id).get();

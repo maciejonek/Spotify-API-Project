@@ -2,25 +2,24 @@ package com.projekt.spotifyApiDownloader.DTO;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.projekt.spotifyApiDownloader.Entity.Track;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TrackListDTO {
     @JsonProperty("track")
-    private Track track;
-
+    private TrackDTO trackDTO;
     public TrackListDTO() {
     }
 
-    public TrackListDTO(Track track) {
-        this.track = track;
+    public TrackListDTO(TrackDTO trackDTO) {
+        this.trackDTO = trackDTO;
     }
 
-    public Track getTrack() {
-        return track;
+    public TrackDTO getTrackDTO() {
+        return trackDTO;
     }
 
-    public void setTrack(Track track) {
-        this.track = track;
+    public void setTrackDTO(TrackDTO trackDTO) {
+        this.trackDTO = trackDTO;
     }
+
 }

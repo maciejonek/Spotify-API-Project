@@ -11,6 +11,7 @@ public class ItemsDTO {
     @JsonProperty("items")
     private List<TrackListDTO> items;
 
+
     public List<TrackListDTO> getItems() {
         return items;
     }
@@ -19,7 +20,4 @@ public class ItemsDTO {
         this.items = items;
     }
 
-    public List<Track> getTracks() {
-        return items.stream().map(TrackListDTO::getTrack).toList();
-    }
 }

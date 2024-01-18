@@ -1,7 +1,6 @@
 package com.projekt.spotifyApiDownloader.Controller;
 import com.projekt.spotifyApiDownloader.Entity.Track;
 import com.projekt.spotifyApiDownloader.Entity.User;
-import com.projekt.spotifyApiDownloader.DTO.UserDTO;
 import com.projekt.spotifyApiDownloader.Service.TrackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

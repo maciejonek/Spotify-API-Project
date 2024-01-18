@@ -23,7 +23,6 @@ public class Track {
     @JsonProperty("name")
     private String name;
     @Column(name = "image")
-    @JsonProperty("type")
     private String image;
 
     @JsonIgnore

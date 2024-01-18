@@ -1,6 +1,7 @@
 package com.projekt.spotifyApiDownloader.Downloader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.projekt.spotifyApiDownloader.DTO.TrackDTO;
 import com.projekt.spotifyApiDownloader.Entity.Playlist;
 import com.projekt.spotifyApiDownloader.Entity.Track;
 import com.projekt.spotifyApiDownloader.Entity.User;
@@ -19,15 +20,12 @@ public class TrackDownloader {
         try {
             URI tracksURI = URI.create("https://api.spotify.com/v1/playlists/"+playlist.getPlaylistId()+"/tracks");
             String accessToken = user.getAuthToken();
-
             HttpResponse<String> response = callForJSON(tracksURI,accessToken);
             ObjectMapper objectMapper = new ObjectMapper();
             ItemsDTO itemsDTO = objectMapper.readValue(response.body(), ItemsDTO.class);
-
             return itemsDTO.getItems().stream().map(item-> {
-                Track track = item.getTrack();
-                track.getPlaylists().add(playlist);
-                return track;
+                TrackDTO trackDTO = item.getTrackDTO();
+                return new Track(trackDTO.getTrackId(), trackDTO.getName(), trackDTO.getAlbum().getImages().get(0).getUrl());
             }).toList();
         }
         catch (Exception e){

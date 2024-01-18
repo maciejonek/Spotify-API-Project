@@ -1,8 +1,9 @@
 package com.projekt.spotifyApiDownloader.Service;
 
+import com.projekt.spotifyApiDownloader.Downloader.UserDownloader;
 import com.projekt.spotifyApiDownloader.Entity.User;
 import com.projekt.spotifyApiDownloader.Repository.UserRepository;
-import com.projekt.spotifyApiDownloader.Tool.UserAuthenticator;
+import com.projekt.spotifyApiDownloader.Tool.Authenticator;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
@@ -19,19 +20,23 @@ public class UserService {
     }
 
     public String getSpotifyURL() {
-        return UserAuthenticator.generateAuthURL();
+        return Authenticator.generateAuthURL();
     }
 
     public void addConnectedUserToDb(String callback) {
-        JSONObject tokenJson = UserAuthenticator.getTokenJson(callback);
+        JSONObject tokenJson = Authenticator.getTokenJson(callback);
         User user = new User(tokenJson.getString("access_token"), tokenJson.getString("refresh_token"));
-        JSONObject userJson = UserAuthenticator.getUserJson(user);
+
+        UserDownloader downloader = new UserDownloader(user);
+        JSONObject userJson = downloader.getUserJson();
+
         user.setDisplayName(userJson.getString("display_name"));
         user.setSpotifyId(userJson.getString("id"));
+
         if (userRepository.findBySpotifyId(user.getSpotifyId()) == null) {
             System.out.println("User does not exist, adding");
             userRepository.save(user);
-            UserAuthenticator.userJsonToPlaylistController(user);
+            downloader.userJsonToPlaylistController();
 
         } else{
             User originUser = userRepository.findBySpotifyId(user.getSpotifyId());
@@ -39,7 +44,8 @@ public class UserService {
             originUser.setAuthToken(user.getAuthToken());
             originUser.setRefreshToken(user.getRefreshToken());
             userRepository.save(originUser);
-            UserAuthenticator.userJsonToPlaylistController(originUser);
+            downloader.setUser(originUser);
+            downloader.userJsonToPlaylistController();
         }
 
 

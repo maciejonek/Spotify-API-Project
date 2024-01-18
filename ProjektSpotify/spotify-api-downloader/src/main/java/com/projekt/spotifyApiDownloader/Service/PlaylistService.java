@@ -4,7 +4,7 @@ import com.projekt.spotifyApiDownloader.Entity.Playlist;
 import com.projekt.spotifyApiDownloader.Entity.User;
 import com.projekt.spotifyApiDownloader.Repository.PlaylistRepository;
 import com.projekt.spotifyApiDownloader.Repository.UserRepository;
-import com.projekt.spotifyApiDownloader.Tool.PlaylistDownloader;
+import com.projekt.spotifyApiDownloader.Downloader.PlaylistDownloader;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

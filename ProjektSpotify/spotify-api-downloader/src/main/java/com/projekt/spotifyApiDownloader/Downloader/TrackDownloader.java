@@ -1,10 +1,10 @@
-package com.projekt.spotifyApiDownloader.Tool;
+package com.projekt.spotifyApiDownloader.Downloader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projekt.spotifyApiDownloader.Entity.Playlist;
 import com.projekt.spotifyApiDownloader.Entity.Track;
 import com.projekt.spotifyApiDownloader.Entity.User;
-import com.projekt.spotifyApiDownloader.FromJsonObjects.ItemsResponse;
+import com.projekt.spotifyApiDownloader.DTO.ItemsDTO;
 
 import java.io.IOException;
 import java.net.URI;
@@ -22,9 +22,9 @@ public class TrackDownloader {
 
             HttpResponse<String> response = callForJSON(tracksURI,accessToken);
             ObjectMapper objectMapper = new ObjectMapper();
-            ItemsResponse itemsResponse = objectMapper.readValue(response.body(), ItemsResponse.class);
+            ItemsDTO itemsDTO = objectMapper.readValue(response.body(), ItemsDTO.class);
 
-            return itemsResponse.getItems().stream().map(item-> {
+            return itemsDTO.getItems().stream().map(item-> {
                 Track track = item.getTrack();
                 track.getPlaylists().add(playlist);
                 return track;

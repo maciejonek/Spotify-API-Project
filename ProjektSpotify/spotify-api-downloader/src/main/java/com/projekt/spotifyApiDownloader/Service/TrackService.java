@@ -5,7 +5,7 @@ import com.projekt.spotifyApiDownloader.Entity.Track;
 import com.projekt.spotifyApiDownloader.Entity.User;
 import com.projekt.spotifyApiDownloader.Repository.PlaylistRepository;
 import com.projekt.spotifyApiDownloader.Repository.TrackRepository;
-import com.projekt.spotifyApiDownloader.Tool.TrackDownloader;
+import com.projekt.spotifyApiDownloader.Downloader.TrackDownloader;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,12 +28,12 @@ public class TrackService {
                 Track existingTrack = trackRepository.findByTrackId(track.getTrackId());
                 Playlist existingPlaylist = playlistRepository.findByPlaylistId(playlist.getPlaylistId());
                 if (existingTrack == null) {
-                    System.out.println("new track");
+                    System.out.println("new track " + track.getName());
                     track.getPlaylists().add(existingPlaylist);
                     existingPlaylist.getPlaylistTracks().add(track);
                     trackRepository.save(track);
                 } else {
-                    System.out.println("track exists");
+                    System.out.println("track exists " + existingTrack.getName());
                     existingTrack.getPlaylists().add(existingPlaylist);
                     existingPlaylist.getPlaylistTracks().add(existingTrack);
                     trackRepository.save(existingTrack);
@@ -49,17 +49,3 @@ public class TrackService {
 
 
 }
-
-//        tracks.forEach(track -> {
-//            if(trackRepository.findByTrackId(track.getTrackId())==null){
-//                System.out.println("new track");
-//                tracks
-//                trackRepository.save(track);
-//            }
-//            else{
-//                System.out.println("track exists");
-//                Track originTrack = trackRepository.findByTrackId(track.getTrackId());
-//                originTrack.getPlaylists().add(playlist);
-//                trackRepository.save(originTrack);
-//            }
-//        });

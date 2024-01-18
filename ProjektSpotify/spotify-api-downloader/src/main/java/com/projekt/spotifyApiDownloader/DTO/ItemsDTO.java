@@ -1,4 +1,4 @@
-package com.projekt.spotifyApiDownloader.FromJsonObjects;
+package com.projekt.spotifyApiDownloader.DTO;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -7,19 +7,19 @@ import com.projekt.spotifyApiDownloader.Entity.Track;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ItemsResponse {
+public class ItemsDTO {
     @JsonProperty("items")
-    private List<TracksItem> items;
+    private List<TrackListDTO> items;
 
-    public List<TracksItem> getItems() {
+    public List<TrackListDTO> getItems() {
         return items;
     }
 
-    public void setItems(List<TracksItem> items) {
+    public void setItems(List<TrackListDTO> items) {
         this.items = items;
     }
 
     public List<Track> getTracks() {
-        return items.stream().map(TracksItem::getTrack).toList();
+        return items.stream().map(TrackListDTO::getTrack).toList();
     }
 }

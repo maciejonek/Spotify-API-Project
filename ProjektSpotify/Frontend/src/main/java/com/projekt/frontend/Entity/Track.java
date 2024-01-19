@@ -1,30 +1,15 @@
-package com.projekt.backend.Entity;
+package com.projekt.frontend.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(name = "track")
 public class Track {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
-    @Column(name = "track_id")
     private String trackId;
-    @Column(name = "name")
     private String name;
-    @Column(name = "image")
     private String image;
-
-    @JsonIgnore
-    @ManyToMany(mappedBy = "playlistTracks")
-    private Set<Playlist> playlists = new HashSet<>();
 
     public Track() {}
 
@@ -64,13 +49,5 @@ public class Track {
     }
     public void setImage(String image) {
         this.image = image;
-    }
-
-    public Set<Playlist> getPlaylists() {
-        return playlists;
-    }
-
-    public void setPlaylists(Set<Playlist> playlists) {
-        this.playlists = playlists;
     }
 }

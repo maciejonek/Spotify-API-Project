@@ -1,28 +1,16 @@
-package com.projekt.backend.Entity;
-
-import jakarta.persistence.*;
+package com.projekt.frontend.Entity;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(name="user")
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="user_id")
     private Long id;
-    @Column(name = "display_name")
     private String displayName;
-    @Column(name = "spotify_id")
     private String spotifyId;
-    @Column(name = "auth_token")
     private String authToken;
-    @Column(name = "refresh_token")
     private String refreshToken;
 
 
-    @OneToMany(mappedBy = "user")
     private Set<Playlist> userPlaylists = new HashSet<>();
 
     public User() {

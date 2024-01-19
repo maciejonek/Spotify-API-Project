@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spotify Project</title>
+</head>
+<body>
+      <tr th:each="user : ${users}">
+      <td th:text="${user.getDisplayName()}"></td>
+      </tr>
+      <a th:href="${url}"><button type="submit">CONNECT SPOTIFY</button></a>
+      <p th:text="${msg}"></p>
+
+
+</body>
+</html>

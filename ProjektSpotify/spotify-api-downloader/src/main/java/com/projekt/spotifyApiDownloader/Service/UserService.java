@@ -23,7 +23,7 @@ public class UserService {
         return Authenticator.generateAuthURL();
     }
 
-    public void addConnectedUserToDb(String callback) {
+    public User addConnectedUserToDb(String callback) {
         JSONObject tokenJson = Authenticator.getTokenJson(callback);
         User user = new User(tokenJson.getString("access_token"), tokenJson.getString("refresh_token"));
 
@@ -37,6 +37,7 @@ public class UserService {
             System.out.println("User does not exist, adding");
             userRepository.save(user);
             downloader.userJsonToPlaylistController();
+            return user;
 
         } else{
             User originUser = userRepository.findBySpotifyId(user.getSpotifyId());
@@ -46,6 +47,7 @@ public class UserService {
             userRepository.save(originUser);
             downloader.setUser(originUser);
             downloader.userJsonToPlaylistController();
+            return originUser;
         }
 
 

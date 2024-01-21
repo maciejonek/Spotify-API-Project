@@ -15,14 +15,6 @@ public class UserService {
     public UserService(){
         this.restClient = RestClient.create();
     }
-    public List<User> findAllUsers(){
-        return restClient
-                .get()
-                .uri(BACKEND_URL + "/user/all")
-                .retrieve()
-                .body(new ParameterizedTypeReference<>() {
-                });
-    }
     public String SpotifyURL(){
         return restClient
                 .get()

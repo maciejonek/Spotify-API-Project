@@ -1,11 +1,31 @@
 package com.projekt.backend.Controller;
 
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.projekt.backend.Entity.Playlist;
+import com.projekt.backend.Service.PlaylistService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/playlist")
 public class PlaylistController {
+    public PlaylistService playlistService;
 
+    @Autowired
+    public PlaylistController(PlaylistService playlistService) {
+        this.playlistService = playlistService;
+    }
+
+    @GetMapping("/user/{id}")
+    public Iterable<Playlist> getUsersPlaylists(@PathVariable Long id){
+        return playlistService.getUsersPlaylists(id);
+    }
+    @GetMapping("/info/{id}")
+    public Playlist getPlaylist(@PathVariable Long id){
+        return playlistService.getPlaylist(id);
+    }
+    @DeleteMapping("/delete")
+    public void removeTrackFromPlaylist(@RequestParam Long id, @RequestParam Long track){
+        playlistService.removeTrackFromPlaylist(id,track);
+    }
 }

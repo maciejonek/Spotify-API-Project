@@ -10,6 +10,7 @@ public class Playlist {
     private String playlistId;
     private String name;
     private String description;
+    private Long userId;
     private Set<Track> playlistTracks = new HashSet<>();
 
     public Playlist() {
@@ -49,6 +50,14 @@ public class Playlist {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public Set<Track> getPlaylistTracks() {

@@ -1,6 +1,7 @@
 package com.projekt.spotifyApiDownloader.Entity;
 
 import jakarta.persistence.*;
+import org.springframework.context.annotation.Scope;
 
 import java.util.HashSet;
 import java.util.Set;

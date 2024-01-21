@@ -5,11 +5,16 @@
     <title>Spotify Project</title>
 </head>
 <body>
-      <tr th:each="user : ${users}">
-      <td th:text="${user.getDisplayName()}"></td>
-      </tr>
-      <a th:href="${url}"><button type="submit">CONNECT SPOTIFY</button></a>
-      <p th:text="${msg}"></p>
+    <p  th:text="${userName}"></p>
+    <a th:if="${!#strings.isEmpty(userName)}" th:href="${url}"><button type="submit">Reset unsaved changes</button></a>
+    <a th:if="${#strings.isEmpty(userName)}" th:href="${url}"><button type="submit">CONNECT SPOTIFY</button></a>
+    <br>
+    <table>
+        <tr th:each="playlist : ${playlists}">
+            <td><a th:href="@{'/playlist/' + ${playlist.getDatabaseId()}}" th:text="${playlist.getName()}"></a></td>
+        </tr>
+    </table>
+    <div th:insert="~{fragments/tracks :: allTracks}"></div>
 
 
 </body>

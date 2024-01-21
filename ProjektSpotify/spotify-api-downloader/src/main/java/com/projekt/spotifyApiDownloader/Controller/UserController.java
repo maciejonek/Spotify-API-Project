@@ -1,5 +1,6 @@
 package com.projekt.spotifyApiDownloader.Controller;
 
+import com.projekt.spotifyApiDownloader.Entity.User;
 import com.projekt.spotifyApiDownloader.Service.UserService;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,9 +30,10 @@ public class UserController {
     }
     @GetMapping("/callback")
     public void connectUser(@RequestParam("code") String auth, HttpServletResponse response, HttpSession session) throws IOException {
-        service.addConnectedUserToDb(auth);
+        User user = service.addConnectedUserToDb(auth);
+        session.setAttribute("userSpotifyId", user.getSpotifyId());
+        session.setAttribute("userName", user.getDisplayName());
+        session.setAttribute("userId", user.getId());
         response.sendRedirect("http://localhost:8082/index");
-        session.setAttribute("sharedVariable", "Hello from Application 1!");
-        System.out.println(1);
     }
 }

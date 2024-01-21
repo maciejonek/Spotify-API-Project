@@ -28,6 +28,9 @@ public class Playlist {
     @JoinColumn(name="user_id")
     private User user;
 
+    @Column(name = "user_id", insertable = false, updatable = false)
+    private Long userId;
+
     @ManyToMany
     @JoinTable(
             name = "playlist_track",
@@ -88,5 +91,13 @@ public class Playlist {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

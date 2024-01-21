@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="Backend" target="17" />
+      <module name="Backend.main" target="17" />
+      <module name="Backend.test" target="17" />
+      <module name="Frontend" target="17" />
+      <module name="Frontend.main" target="17" />
+      <module name="Frontend.test" target="17" />
+      <module name="spotify-api-downloader" target="17" />
+      <module name="spotify-api-downloader.main" target="17" />
+      <module name="spotify-api-downloader.test" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

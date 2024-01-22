@@ -10,6 +10,7 @@ public class Track {
     private String trackId;
     private String name;
     private String image;
+    private String uri;
 
     public Track() {}
 
@@ -49,5 +50,13 @@ public class Track {
     }
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 }

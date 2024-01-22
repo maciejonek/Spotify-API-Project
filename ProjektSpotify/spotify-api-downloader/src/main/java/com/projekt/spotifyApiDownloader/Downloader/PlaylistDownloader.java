@@ -26,9 +26,7 @@ public class PlaylistDownloader {
             String accessToken = user.getAuthToken();
             Downloader downloader = new Downloader();
             JSONObject playlists = downloader.getSpotifyJSON(user,playlistURL);
-//            HttpResponse<String> response = callForJSON(playlistURI,accessToken);
             ObjectMapper objectMapper = new ObjectMapper();
-//            PlaylistDTO playlistDTO = objectMapper.readValue(response.body(), PlaylistDTO.class);
             PlaylistDTO playlistDTO1 = objectMapper.readValue(playlists.toString(), PlaylistDTO.class);
             return playlistDTO1.getPlaylists().stream().map(
                     playlistObject -> new Playlist(

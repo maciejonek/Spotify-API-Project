@@ -52,15 +52,23 @@ public class WebController {
     @GetMapping("/playlist/{id}")
     public String playlistInspect(@PathVariable Long id, Model model,HttpSession session){
         model.addAttribute("playlist", playlistService.getPlaylistInfo(id));
+        model.addAttribute("tracks", trackService.getAllTracks());
         Long userId = (Long) session.getAttribute("userId");
         model.addAttribute("userId", userId);
         return "playlist";
     }
-    @GetMapping("/playlist/{id}/delete/{track}")
-    public String deleteTrack(@PathVariable Long id, @PathVariable Long track, HttpSession session){
+    @GetMapping("/playlist/{id}/delete/{track}/uri/{uri}")
+    public String deleteTrack(@PathVariable Long id, @PathVariable Long track, @PathVariable String uri, HttpSession session){
         Long userId = (Long) session.getAttribute("userId");
         if(!Objects.equals(userId, playlistService.getPlaylistInfo(id).getUserId())) return "redirect:/index";
-        playlistService.deleteTrack(id,track);
+        playlistService.deleteTrack(id,track,uri,userId);
+        return "redirect:/playlist/"+id;
+    }
+    @GetMapping("/playlist/{id}/add/{track}/uri/{uri}")
+    public String addTrack(@PathVariable Long id, @PathVariable Long track, @PathVariable String uri, HttpSession session){
+        Long userId = (Long) session.getAttribute("userId");
+        if(!Objects.equals(userId, playlistService.getPlaylistInfo(id).getUserId())) return "redirect:/index";
+        playlistService.addTrack(id,track,uri,userId);
         return "redirect:/playlist/"+id;
     }
 

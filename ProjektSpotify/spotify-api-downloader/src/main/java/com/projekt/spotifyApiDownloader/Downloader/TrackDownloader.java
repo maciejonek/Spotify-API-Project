@@ -25,7 +25,7 @@ public class TrackDownloader {
             ItemsDTO itemsDTO = objectMapper.readValue(response.body(), ItemsDTO.class);
             return itemsDTO.getItems().stream().map(item-> {
                 TrackDTO trackDTO = item.getTrackDTO();
-                return new Track(trackDTO.getTrackId(), trackDTO.getName(), trackDTO.getAlbum().getImages().get(0).getUrl());
+                return new Track(trackDTO.getTrackId(), trackDTO.getName(), trackDTO.getAlbum().getImages().get(0).getUrl(),trackDTO.getUri());
             }).toList();
         }
         catch (Exception e){

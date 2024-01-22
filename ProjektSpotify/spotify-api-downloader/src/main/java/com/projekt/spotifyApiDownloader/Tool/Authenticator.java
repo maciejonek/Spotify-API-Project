@@ -20,7 +20,7 @@ public class Authenticator {
     private static final String redirectUri = "http://localhost:8080/user/callback";
 
     public static String generateAuthURL() {
-        String scopes = "user-read-private user-read-email user-library-read";
+        String scopes = "user-read-private user-read-email user-library-read playlist-modify-private playlist-modify-public";
         String encodedScopes = URLEncoder.encode(scopes, StandardCharsets.UTF_8);
         return String.format(
                 "https://accounts.spotify.com/authorize?response_type=code&client_id=%s&scope=%s&redirect_uri=%s",

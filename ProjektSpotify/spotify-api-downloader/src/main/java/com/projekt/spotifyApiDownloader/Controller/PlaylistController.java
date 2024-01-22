@@ -23,4 +23,15 @@ public class PlaylistController {
     public Playlist getPlaylist(@PathVariable Long id){
         return playlistService.getPlaylist(id);
     }
+
+    @DeleteMapping ("/remove")
+    public void removeTrack(@RequestParam String playlist, @RequestParam String track, @RequestParam String token){
+        playlistService.removeTrackFromPlaylist(playlist, track, token);
+    }
+
+    @PostMapping("/add")
+    public void addTrack(@RequestParam String playlist, @RequestParam String track, @RequestParam String token){
+        playlistService.addTrackFromPlaylist(playlist, track, token);
+    }
+
 }

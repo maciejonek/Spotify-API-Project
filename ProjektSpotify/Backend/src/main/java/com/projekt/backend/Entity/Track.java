@@ -21,6 +21,8 @@ public class Track {
     private String name;
     @Column(name = "image")
     private String image;
+    @Column(name = "uri")
+    private String uri;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "playlistTracks")
@@ -72,5 +74,13 @@ public class Track {
 
     public void setPlaylists(Set<Playlist> playlists) {
         this.playlists = playlists;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 }

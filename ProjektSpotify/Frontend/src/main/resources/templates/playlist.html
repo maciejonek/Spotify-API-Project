@@ -11,7 +11,16 @@
             <tr th:each="track : ${playlist.getPlaylistTracks()}">
                 <td><img th:src="${track.getImage()}" style="width: 50px;height: 50px"></td>
                 <td th:text="${track.getName()}"></td>
-                <td><a th:href="@{'/playlist/' + ${playlist.getDatabaseId()} + '/delete/'+${track.getId()}}"><button>-</button></a></td>
+                <td><a th:href="@{'/playlist/' + ${playlist.getDatabaseId()} + '/delete/'+${track.getId()} + '/uri/' + ${track.getUri()}}"><button>-</button></a></td>
+            </tr>
+        </table>
+    </div>
+    <div th:if="${userId == playlist.getUserId()}">
+        <table>
+            <tr th:each="track : ${tracks}">
+                <td><img th:src="${track.getImage()}" style="width: 50px;height: 50px"></td>
+                <td th:text="${track.getName()}"></td>
+                <td><a th:href="@{'/playlist/' + ${playlist.getDatabaseId()} + '/add/'+${track.getId()} + '/uri/' + ${track.getUri()}}"><button>+</button></a></td>
             </tr>
         </table>
     </div>

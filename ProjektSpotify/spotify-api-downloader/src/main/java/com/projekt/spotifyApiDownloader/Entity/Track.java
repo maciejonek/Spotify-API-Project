@@ -25,6 +25,9 @@ public class Track {
     @Column(name = "image")
     private String image;
 
+    @Column(name="uri")
+    private String uri;
+
     @JsonIgnore
     @ManyToMany(mappedBy = "playlistTracks")
     private Set<Playlist> playlists = new HashSet<>();
@@ -32,12 +35,12 @@ public class Track {
     public Track() {}
 
 
-    public Track(String trackId, String name, String image) {
+    public Track(String trackId, String name, String image, String uri) {
         this.trackId = trackId;
         this.name = name;
         this.image = image;
+        this.uri = uri;
     }
-
 
     public Long getId() {
         return id;
@@ -81,5 +84,13 @@ public class Track {
 
     public void setPlaylists(Set<Playlist> playlists) {
         this.playlists = playlists;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 }

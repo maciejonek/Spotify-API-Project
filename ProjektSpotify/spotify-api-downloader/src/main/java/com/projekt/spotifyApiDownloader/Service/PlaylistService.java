@@ -5,6 +5,7 @@ import com.projekt.spotifyApiDownloader.Entity.User;
 import com.projekt.spotifyApiDownloader.Repository.PlaylistRepository;
 import com.projekt.spotifyApiDownloader.Repository.UserRepository;
 import com.projekt.spotifyApiDownloader.Downloader.PlaylistDownloader;
+import com.projekt.spotifyApiDownloader.Updater.PlaylistUpdater;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,5 +47,17 @@ public class PlaylistService {
     }
     public Playlist getPlaylist(Long id){
         return this.playlistRepository.findById(id).get();
+    }
+
+    public void removeTrackFromPlaylist(String playlist, String track, String token){
+        PlaylistUpdater updater = new PlaylistUpdater();
+        updater.removePlaylistItem(playlist,token, track);
+        System.out.println(123);
+    }
+
+    public void addTrackFromPlaylist(String playlist, String track, String token){
+        PlaylistUpdater updater = new PlaylistUpdater();
+        updater.addPlaylistItem(playlist,token,track);
+        System.out.println(31);
     }
 }

@@ -2,6 +2,8 @@ package com.projekt.frontend.Service;
 
 import com.projekt.frontend.Entity.Playlist;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -32,9 +34,20 @@ public class PlaylistService {
                 .body(Playlist.class);
     }
 
-    public void deleteTrack(Long id, Long track){
+    public void deleteTrack(Long id, Long track, String trackUri, Long userId){
         restClient.delete()
-                .uri(BACKEND_URL + "/playlist/delete?id="+id+"&track=" + track)
-                .retrieve();
+                .uri(BACKEND_URL + "/playlist/delete?id="+id+"&track=" + track + "&uri="+ trackUri + "&user=" + userId)
+                .retrieve()
+                .toEntity(String.class);
+    }
+    public void addTrack(Long id, Long track, String trackUri, Long userId){
+//        System.out.println(id);
+//        System.out.println(track);
+//        System.out.println(trackUri);
+//        System.out.println(userId);
+        restClient.post()
+                .uri(BACKEND_URL + "/playlist/add?id="+id+"&track=" + track + "&uri="+ trackUri + "&user=" + userId)
+                .retrieve()
+                .toEntity(String.class);
     }
 }

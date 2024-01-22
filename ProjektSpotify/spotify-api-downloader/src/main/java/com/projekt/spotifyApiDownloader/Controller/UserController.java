@@ -34,6 +34,7 @@ public class UserController {
         session.setAttribute("userSpotifyId", user.getSpotifyId());
         session.setAttribute("userName", user.getDisplayName());
         session.setAttribute("userId", user.getId());
+        session.setAttribute("userToken", user.getAuthToken());
         response.sendRedirect("http://localhost:8082/index");
     }
 }

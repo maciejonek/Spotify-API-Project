@@ -19,16 +19,8 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-    @GetMapping("/test")
-    public int testGet(){
-        return userService.getMappingTest();
-    }
-    @GetMapping("/get/{id}")
-    public User getUserbyId(@RequestParam Long id){
+    @GetMapping("/get")
+    public User getUserById(@RequestParam Long id){
         return userService.getUserById(id);
-    }
-    @GetMapping("/all")
-    public Iterable<User> getAllUsers(){
-        return userService.getAllUsers();
     }
 }

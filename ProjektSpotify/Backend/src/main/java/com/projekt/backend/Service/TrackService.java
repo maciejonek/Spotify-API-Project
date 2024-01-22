@@ -13,7 +13,6 @@ public class TrackService {
     }
 
     public Iterable<Track> getAllTracks(){
-        Iterable<Track> tracks = trackRepository.findAll();
-        return tracks;
+        return trackRepository.findAll();
     }
 }

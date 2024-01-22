@@ -55,4 +55,7 @@ public class IndexPageTest {
         page.clickOnPlaylist();
         page.deleteTrack();
     }
+
+
+
 }

@@ -1,9 +1,15 @@
 <body>
-  <table th:fragment="allTracks">
-    <tr th:each="track : ${tracks}">
-      <td><img th:src="${track.getImage()}" style="width: 50px;height: 50px"></td>
-      <td th:text="${track.getName()}"></td>
+    <input type="text" id="input" onkeyup="myFunction()" placeholder="Search for track" th:fragment="search" autocomplete="off">
+    <div th:fragment="allTracks">
+        <table id="search-table">
+            <td th:each="track : ${tracks}">
+                <div class="track-box">
+                        <img th:src="${track.getImage()}">
+                        <span><p th:text="${track.getName()}" class="track-name"></p></span>
+                </div>
+            </td>
+        </table>
 
-    </tr>
-  </table>
+    </div>
+
 </body>

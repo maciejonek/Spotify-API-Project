@@ -23,6 +23,10 @@ public class Playlist {
     @Column(name = "description")
     private String description;
 
+    @JsonProperty("public")
+    @Column(name="public")
+    private boolean isPublic;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name="user_id")
@@ -39,10 +43,12 @@ public class Playlist {
 
     public Playlist() {
     }
-        public Playlist(String playlistId, String name, String description) {
+
+    public Playlist(String playlistId, String name, String description, boolean isPublic) {
         this.playlistId = playlistId;
         this.name = name;
         this.description = description;
+        this.isPublic = isPublic;
     }
 
     public Long getDatabaseId() {
@@ -91,5 +97,13 @@ public class Playlist {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Boolean getPublic() {
+        return isPublic;
+    }
+
+    public void setPublic(Boolean aPublic) {
+        isPublic = aPublic;
     }
 }

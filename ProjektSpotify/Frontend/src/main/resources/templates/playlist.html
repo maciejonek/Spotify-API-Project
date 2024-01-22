@@ -3,29 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <title>Playlist</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <div th:if="${userId == playlist.getUserId()}">
-        <p th:text="${playlist.getName()}">
-        <table>
-            <tr th:each="track : ${playlist.getPlaylistTracks()}">
-                <td><img th:src="${track.getImage()}" style="width: 50px;height: 50px"></td>
-                <td th:text="${track.getName()}"></td>
-                <td><a th:href="@{'/playlist/' + ${playlist.getDatabaseId()} + '/delete/'+${track.getId()} + '/uri/' + ${track.getUri()}}"><button>-</button></a></td>
-            </tr>
-        </table>
+    <div class="box">
+    <div style="position: absolute; z-index: 0; height: 95%">
+        <img th:src="@{/images/background.png}" style="height: 100%">
     </div>
+    <div class="icon-box" th:insert="~{fragments/icons}"></div>
     <div th:if="${userId == playlist.getUserId()}">
-        <table>
-            <tr th:each="track : ${tracks}">
-                <td><img th:src="${track.getImage()}" style="width: 50px;height: 50px"></td>
-                <td th:text="${track.getName()}"></td>
-                <td><a th:href="@{'/playlist/' + ${playlist.getDatabaseId()} + '/add/'+${track.getId()} + '/uri/' + ${track.getUri()}}"><button>+</button></a></td>
-            </tr>
-        </table>
+        <div class="window" id="moved1">
+            <div class="window-title">
+                <p>Your playlist</p>
+                <span><p>X</p></span>
+            </div>
+            <div class="tool-bar">
+                <p>Edit details</p>
+                <p>Help</p>
+            </div>
+            <div id="playlist-properties-box">
+                <form th:action="@{'/playlist/' + ${playlist.getDatabaseId()} + '/details'}" th:object="${playlist}" method="post">
+                    <div id="playlist-properties-inputs">
+                    <input type="hidden" th:field="*{databaseId}">
+                    <input type="hidden" th:field="*{playlistId}">
+                    <input type="text"  th:field="*{name}" placeholder="Name">
+                    <input type="text" th:field="*{description}" placeholder="Description">
+                    <label>Public:<input type="checkbox" name="public" th:field="*{public}"></label>
+                    <button type="submit" value="Edit">Update Details</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="window" id="moved2" style="height: 375px;">
+            <div class="window-title">
+                <p>Playlist's tracks</p>
+                <span><p>X</p></span>
+            </div>
+            <div class="tool-bar">
+                <p>Click on track to remove it from playlist</p>
+                <p>Help</p>
+            </div>
+            <div class="playlist-track-box vertical-scroll" style="height: 300px">
+                <table>
+                    <tr th:each="track : ${playlist.getPlaylistTracks()}">
+                        <td>
+                            <form th:action="@{'/playlist/' + ${playlist.getDatabaseId()} + '/delete/'+${track.getId()} + '/uri/' + ${track.getUri()}}">
+                                <div class="track-container">
+                                    <button type="submit" class="track-action-button invisible-scroll">
+                                        <img th:src="${track.getImage()}" style="width: 50px;height: 50px">
+                                        <p th:text="${track.getName()}"></p>
+                                    </button>
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="window" id="moved3">
+            <div class="window-title">
+                <p>All Tracks</p>
+                <span><p>X</p></span>
+            </div>
+            <div class="tool-bar">
+                <p>Add track</p>
+                <p>Help</p>
+            </div>
+            <div class="playlist-track-box vertical-scroll">
+            <table>
+                <tr th:each="track : ${tracks}">
+                    <td><img th:src="${track.getImage()}" style="width: 50px;height: 50px"></td>
+                    <td th:text="${track.getName()}"></td>
+                    <td><a th:href="@{'/playlist/' + ${playlist.getDatabaseId()} + '/add/'+${track.getId()} + '/uri/' + ${track.getUri()}}"><button>+</button></a></td>
+                </tr>
+            </table>
+            </div>
+        </div>
     </div>
+
     <div th:if="${userId != playlist.getUserId()}">
         <p>not allowed</p>
     </div>
+    </div>
+    <div class="footer">
+        <div>
+            <form th:action="@{/index}" method="get">
+                <button type="submit" id="start-button"><p>START</p> <img src="https://media.tenor.com/ArbmVSEjmWUAAAAi/dj-emoji.gif" style="height: 40px; width: 40px"></button>
+            </form>
+        </div>
+        <div>
+
+        </div>
+        <div id="time-border">
+            <p>04:04</p>
+        </div>
+    </div>
+
 </body>
 </html>

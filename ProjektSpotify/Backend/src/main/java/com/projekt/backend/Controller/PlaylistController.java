@@ -32,4 +32,8 @@ public class PlaylistController {
     public void addTrackToPlaylist(@RequestParam Long id, @RequestParam Long track,@RequestParam String uri, @RequestParam Long user){
         playlistService.addTrackToPlaylist(id,track,uri,user);
     }
+    @PutMapping("/edit")
+    public void editPlaylistDetails(@RequestBody Playlist playlist, @RequestParam Long user){
+        playlistService.editPlaylistDetails(playlist,user);
+    }
 }

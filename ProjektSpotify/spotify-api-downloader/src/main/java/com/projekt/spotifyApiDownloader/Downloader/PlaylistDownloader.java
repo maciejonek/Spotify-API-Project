@@ -12,7 +12,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.projekt.spotifyApiDownloader.Tool.Converter.convertEntityToString;
@@ -30,10 +29,11 @@ public class PlaylistDownloader {
             PlaylistDTO playlistDTO1 = objectMapper.readValue(playlists.toString(), PlaylistDTO.class);
             return playlistDTO1.getPlaylists().stream().map(
                     playlistObject -> new Playlist(
-                            playlistObject.getPlaylistId(),
-                            playlistObject.getName(),
-                            playlistObject.getDescription()
-                    )
+                                playlistObject.getPlaylistId(),
+                                playlistObject.getName(),
+                                playlistObject.getDescription(),
+                                playlistObject.getPublic()
+                        )
             ).toList();
         }
         catch (Exception e){

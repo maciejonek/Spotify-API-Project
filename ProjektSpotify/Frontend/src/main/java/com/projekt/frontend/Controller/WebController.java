@@ -39,7 +39,6 @@ public class WebController {
         if(userId != null)
             if(playlistService.getPlaylists(userId) != null)
                 playlists.addAll(playlistService.getPlaylists(userId));
-
         model.addAttribute("url",userService.SpotifyURL());
         model.addAttribute("tracks", trackService.getAllTracks());
         model.addAttribute("playlists", playlists);
@@ -53,6 +52,7 @@ public class WebController {
     public String playlistInspect(@PathVariable Long id, Model model,HttpSession session){
         model.addAttribute("playlist", playlistService.getPlaylistInfo(id));
         model.addAttribute("tracks", trackService.getAllTracks());
+        model.addAttribute("isPublic", true);
         Long userId = (Long) session.getAttribute("userId");
         model.addAttribute("userId", userId);
         return "playlist";
@@ -69,6 +69,13 @@ public class WebController {
         Long userId = (Long) session.getAttribute("userId");
         if(!Objects.equals(userId, playlistService.getPlaylistInfo(id).getUserId())) return "redirect:/index";
         playlistService.addTrack(id,track,uri,userId);
+        return "redirect:/playlist/"+id;
+    }
+
+    @PostMapping("/playlist/{id}/details")
+    public String editPlaylistInfo(@PathVariable Long id, Playlist playlist, HttpSession session){
+        Long userId = (Long) session.getAttribute("userId");
+        playlistService.editDetails(playlist,userId);
         return "redirect:/playlist/"+id;
     }
 

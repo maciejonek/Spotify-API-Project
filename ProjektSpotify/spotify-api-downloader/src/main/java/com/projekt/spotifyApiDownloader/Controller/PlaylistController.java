@@ -34,4 +34,9 @@ public class PlaylistController {
         playlistService.addTrackFromPlaylist(playlist, track, token);
     }
 
+    @PutMapping("/edit")
+    public void editPlaylistDetails(@RequestBody Playlist playlist, @RequestParam String token){
+        playlistService.editPlaylistDetails(playlist,token);
+    }
+
 }

@@ -13,20 +13,12 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public int getMappingTest(){
-        return 1;
-    }
-
     public User getUserById(Long id){
         if(userRepository.findById(id).isPresent()){
             return userRepository.findById(id).get();
         }
         else
             throw new UserNotFoundException("User does not exist");
-    }
-
-    public Iterable<User> getAllUsers(){
-        return userRepository.findAll();
     }
 
 

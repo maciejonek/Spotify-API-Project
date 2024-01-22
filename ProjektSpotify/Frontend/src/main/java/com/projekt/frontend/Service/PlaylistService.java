@@ -3,6 +3,7 @@ package com.projekt.frontend.Service;
 import com.projekt.frontend.Entity.Playlist;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -41,13 +42,16 @@ public class PlaylistService {
                 .toEntity(String.class);
     }
     public void addTrack(Long id, Long track, String trackUri, Long userId){
-//        System.out.println(id);
-//        System.out.println(track);
-//        System.out.println(trackUri);
-//        System.out.println(userId);
         restClient.post()
                 .uri(BACKEND_URL + "/playlist/add?id="+id+"&track=" + track + "&uri="+ trackUri + "&user=" + userId)
                 .retrieve()
                 .toEntity(String.class);
+    }
+    public void editDetails(Playlist playlist, Long userId){
+        restClient.put()
+                .uri(BACKEND_URL + "/playlist/edit?user=" + userId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(playlist)
+                .retrieve();
     }
 }

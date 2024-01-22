@@ -1,11 +1,13 @@
 package com.projekt.spotifyApiDownloader.Service;
 
+import com.projekt.spotifyApiDownloader.DTO.PlaylistDetailsDTO;
 import com.projekt.spotifyApiDownloader.Entity.Playlist;
 import com.projekt.spotifyApiDownloader.Entity.User;
 import com.projekt.spotifyApiDownloader.Repository.PlaylistRepository;
 import com.projekt.spotifyApiDownloader.Repository.UserRepository;
 import com.projekt.spotifyApiDownloader.Downloader.PlaylistDownloader;
-import com.projekt.spotifyApiDownloader.Updater.PlaylistUpdater;
+import com.projekt.spotifyApiDownloader.Updater.PlaylistDetailsUpdater;
+import com.projekt.spotifyApiDownloader.Updater.PlaylistItemsUpdater;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,6 +40,7 @@ public class PlaylistService {
                 originPlaylist.setName(playlist.getName());
                 originPlaylist.getPlaylistTracks().clear();
                 originPlaylist.setUser(originUser);
+                originPlaylist.setPublic(playlist.getPublic());
                 playlistRepository.save(originPlaylist);
                 originUser.getUserPlaylists().add(originPlaylist);
                 userRepository.save(originUser);
@@ -50,14 +53,17 @@ public class PlaylistService {
     }
 
     public void removeTrackFromPlaylist(String playlist, String track, String token){
-        PlaylistUpdater updater = new PlaylistUpdater();
+        PlaylistItemsUpdater updater = new PlaylistItemsUpdater();
         updater.removePlaylistItem(playlist,token, track);
-        System.out.println(123);
     }
 
     public void addTrackFromPlaylist(String playlist, String track, String token){
-        PlaylistUpdater updater = new PlaylistUpdater();
+        PlaylistItemsUpdater updater = new PlaylistItemsUpdater();
         updater.addPlaylistItem(playlist,token,track);
-        System.out.println(31);
+    }
+
+    public void editPlaylistDetails(Playlist playlist,String token){
+        PlaylistDetailsUpdater updater = new PlaylistDetailsUpdater();
+        updater.editDetails(playlist,token);
     }
 }

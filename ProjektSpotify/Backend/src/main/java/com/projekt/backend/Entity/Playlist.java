@@ -23,6 +23,9 @@ public class Playlist {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "public")
+    private Boolean isPublic;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name="user_id")
@@ -40,11 +43,6 @@ public class Playlist {
     private Set<Track> playlistTracks = new HashSet<>();
 
     public Playlist() {
-    }
-        public Playlist(String playlistId, String name, String description) {
-        this.playlistId = playlistId;
-        this.name = name;
-        this.description = description;
     }
 
     public Long getDatabaseId() {
@@ -76,6 +74,14 @@ public class Playlist {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getPublic() {
+        return isPublic;
+    }
+
+    public void setPublic(Boolean aPublic) {
+        isPublic = aPublic;
     }
 
     public Set<Track> getPlaylistTracks() {

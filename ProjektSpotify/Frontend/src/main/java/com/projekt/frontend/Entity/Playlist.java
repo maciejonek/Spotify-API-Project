@@ -10,6 +10,7 @@ public class Playlist {
     private String playlistId;
     private String name;
     private String description;
+    private Boolean isPublic;
     private Long userId;
     private Set<Track> playlistTracks = new HashSet<>();
 
@@ -50,6 +51,14 @@ public class Playlist {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getPublic() {
+        return isPublic;
+    }
+
+    public void setPublic(Boolean aPublic) {
+        isPublic = aPublic;
     }
 
     public Long getUserId() {

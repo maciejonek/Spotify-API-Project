@@ -3,19 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <title>Spotify Project</title>
+    <script type="text/javascript" th:src="@{/js/scripts.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <p  th:text="${userName}"></p>
-    <a th:if="${!#strings.isEmpty(userName)}" th:href="${url}"><button type="submit">Reset unsaved changes</button></a>
-    <a th:if="${#strings.isEmpty(userName)}" th:href="${url}"><button type="submit">CONNECT SPOTIFY</button></a>
-    <br>
-    <table>
-        <tr th:each="playlist : ${playlists}">
-            <td><a th:href="@{'/playlist/' + ${playlist.getDatabaseId()}}" th:text="${playlist.getName()}"></a></td>
-        </tr>
-    </table>
-    <div th:insert="~{fragments/tracks :: allTracks}"></div>
+    <div class="box">
+        <div style="position: absolute; z-index: 0; height: 95%">
+            <img th:src="@{/images/background.png}" style="height: 100%">
+        </div>
+        <div class="icon-box" th:insert="~{fragments/icons}"></div>
+        <div id="playlists-container" th:if="${!#strings.isEmpty(userName)}">
+            <div class="window-title">
+                <p>Playlists</p>
+                <span><p>X</p></span>
+            </div>
+            <div class="tool-bar">
+                <p>Files</p>
+                <p>Edit</p>
+                <p>View</p>
+                <p>Options</p>
+                <p>Help</p>
+            </div>
+            <div id="playlist-table" class="vertical-scroll">
+                <table class="table">
+                    <tr th:each="playlist : ${playlists}" class="table-row">
+                        <td><a th:href="@{'/playlist/' + ${playlist.getDatabaseId()}}"><p th:text="${playlist.getName()}" class="table-data"></p></a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
 
+        <div id="user-container">
+            <div class="window-title">
+                <p th:if="${#strings.isEmpty(userName)}" >User: ???</p>
+                <p th:if="!${#strings.isEmpty(userName)}" th:text="'User:' + ${userName}"></p>
+                <span><p>X</p></span>
+            </div>
+            <div class="tool-bar">
+                <p th:if="${#strings.isEmpty(userName)}">...</p>
+                <p th:if="!${#strings.isEmpty(userName)}">:)</p>
+                <p>Help</p>
+            </div>
+            <div id="user-image-box">
+                <img th:if="${#strings.isEmpty(userName)}" src="there is no image, aesthetics purpose" id="no-image">
+                <img th:if="!${#strings.isEmpty(userName)}" src="https://i.pinimg.com/originals/71/f5/63/71f563dcb90ad6c8c8be8b5af75454eb.jpg" id="user-image">
+            </div>
+            <div id="button-box">
+                <a th:if="${!#strings.isEmpty(userName)}" th:href="${url}"><button type="submit" class="button">Reset unsaved changes</button></a>
+                <a th:if="${#strings.isEmpty(userName)}" th:href="${url}"><button type="submit" class="button">CONNECT SPOTIFY</button></a>
+            </div>
+        </div>
+        <div id="tracks-preview">
+            <div class="window-title">
+                <p>All Tracks</p>
+                <span><p>X</p></span>
+            </div>
+            <div class="tool-bar">
+                <p>Files</p>
+                <p>Options</p>
+                <p>Help</p>
+            </div>
+            <div th:insert="~{fragments/tracks :: search}" id="search"></div>
+            <div th:insert="~{fragments/tracks :: allTracks}" id="all-tracks-box" class="horizontal-scroll"></div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <div>
+            <button type="submit" id="start-button"><p>START</p> <img src="https://media.tenor.com/ArbmVSEjmWUAAAAi/dj-emoji.gif" style="height: 40px; width: 40px"></button>
+        </div>
+
+
+        <div id="time-border">
+            <p>04:04</p>
+        </div>
+    </div>
 
 </body>
 </html>
